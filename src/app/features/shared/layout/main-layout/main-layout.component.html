@@ -1,0 +1,13 @@
+<div class="flex flex-col  bg-[#f5f5f9]">
+    <app-header (toggleSidenav)="toggleSidenav()" class="fixed top-0 left-0 right-0 z-50"/>  
+    <div class="flex pt-16">
+        <div class="transition-all duration-300 ease-in-out overflow-hidden"
+             [class.w-64]="isSidenavVisible"
+             [class.w-0]="!isSidenavVisible">
+            <app-sidenav />
+        </div>        
+        <div class="flex-1 !h-[calc(100vh-49px)] !w-full !overflow-auto p-6">
+            <router-outlet />
+        </div>
+    </div>
+</div>

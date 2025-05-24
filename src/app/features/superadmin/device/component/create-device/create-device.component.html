@@ -1,0 +1,46 @@
+<div class="modal-header text-center">
+    <h5>Add Device</h5>
+    <div class="close-modal" (click)="close()">
+        <i class="fa fa-close" style="cursor: pointer;"></i>
+    </div>
+</div>
+<div class="modal-body">
+    <form [formGroup]="deviceForm" (ngSubmit)="onSubmit($event, deviceForm.value)">
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Host</label>
+                <input type="text" class="form-control" placeholder="Enter Host" formControlName="host"/>
+                @if (deviceForm.get('host')?.touched && deviceForm.get('host')?.invalid) {
+                    <div class="text-danger small">Host is required</div>
+                }
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Port</label>
+                <input type="number" class="form-control" placeholder="Enter Port" formControlName="port"/>
+                @if (deviceForm.get('port')?.touched && deviceForm.get('port')?.invalid) {
+                    <div class="text-danger small">Port is required</div>
+                }
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" placeholder="Enter Username" formControlName="username"/>
+                @if (deviceForm.get('username')?.touched && deviceForm.get('username')?.invalid) {
+                    <div class="text-danger small">Username is required</div>
+                }
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" placeholder="Enter Password" formControlName="password"/>
+                @if (deviceForm.get('password')?.touched && deviceForm.get('password')?.invalid) {
+                    <div class="text-danger small">Password is required</div>
+                }
+            </div>
+        </div>
+        <div class="footer">
+            <div class="button-container">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-danger" (click)="close()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

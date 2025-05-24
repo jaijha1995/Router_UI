@@ -1,0 +1,65 @@
+<aside class="!bg-[#2b2b3c] !h-[calc(100vh-49px)] !w-64 !transition-all !duration-300">
+  <nav class="!pt-4 !h-full !overflow-auto">
+      <ul class="!space-y-1">
+        @for(data of menu ; track data) {
+          <li class="cursor-pointer pr-3">
+            <div [class.cursor-pointer]="data.subNav.length > 0"
+              [class.!bg-[#383850]]="isMenuSelected(data.name) || hasActiveChild(data.name)"
+              [class.!text-[#00bcd4]]="isMenuSelected(data.name) || hasActiveChild(data.name)"
+              [routerLink]="!data.subNav.length ? data.path : null"
+              [routerLinkActive]="!data.subNav.length ? '!bg-[#383850] !text-[#00bcd4]' : ''"
+              (click)="toggleSubmenu(data.name)"
+              class="!flex !items-center !justify-between !px-4 !py-2.5 !rounded-lg !text-gray-300 hover:!bg-[#383850] hover:!text-[#00bcd4]">
+              <div class="!flex !items-center">
+                <svg class="!w-5 !h-5 !mr-3" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path [attr.d]="data.iconPath"></path>
+                </svg>
+                <span class="!whitespace-nowrap !overflow-hidden !transition-all !duration-300 !ease-in-out">
+                  {{data?.name}}
+                </span>
+              </div>
+              
+              @if(data.subNav.length > 0) {
+                <svg class="!w-4 !h-4 !transition-transform" 
+                  [class.!rotate-180]="isSubmenuOpen(data.name)"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              }
+            </div>
+  
+            @if(data.subNav.length > 0 && isSubmenuOpen(data.name)) {
+              <ul class="!mt-1 !ml-7 !space-y-1">
+                @for(subItem of data.subNav; track subItem) {
+                  <li>
+                    <a [routerLink]="subItem.path" 
+                      routerLinkActive="!text-[#00bcd4]"
+                      [class.!text-[#00bcd4]]="isSubmenuSelected(subItem?.name)"
+                      [routerLinkActiveOptions]="{exact: true}"
+                      class="!flex !items-center !px-4 !py-2 !text-gray-300 hover:!text-[#00bcd4] !rounded-lg">
+                      <svg class="!w-4 !h-4 !mr-2" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path [attr.d]="subItem.iconPath"></path>
+                      </svg>
+                      {{subItem.name}}
+                    </a>
+                  </li>
+                }
+              </ul>
+            }
+          </li>
+        }
+      </ul>
+    </nav>
+  </aside>

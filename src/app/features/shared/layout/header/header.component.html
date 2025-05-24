@@ -1,0 +1,59 @@
+<header class="h-16 bg-[#00bcd4] shadow-sm flex items-center justify-between px-6">
+    <div class="flex items-center space-x-4 px-2">
+        <span class="text-white text-3xl font-bold">DABSAH</span>
+        <button 
+        (click)="onToggleSidenav()"
+          class="text-white hover:bg-white/10 p-2 rounded-lg cursor-pointer">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+  <div class="flex-1 max-w-xl mx-4">
+    <div class="relative">
+      <input 
+        type="text" 
+        placeholder="Search..." 
+        class="w-full px-4 py-2 rounded-lg bg-white/10 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:border-white"
+      >
+      <button class="absolute right-3 top-1/2 transform -translate-y-1/2">
+        <svg class="w-5 h-5 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="flex items-center space-x-3">
+    <div class="relative">
+        <div 
+            (click)="toggleDropdown()" 
+            class="flex items-center bg-white/10 rounded-full px-3 py-1.5 cursor-pointer hover:bg-white/20">
+            <span class="text-white text-sm mr-1">{{user?.name}}</span>
+            <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </div>
+        @if(isDropdownOpen) {
+          <div          
+              class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
+              <a 
+                  routerLink="/account" 
+                  class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
+                  <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Account
+              </a>
+              <a 
+                  (click)="logout()" 
+                  class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
+                  <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Logout
+              </a>
+          </div>
+        }
+    </div>
+  </div>
+</header>
