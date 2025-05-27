@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LiveDeviceDataComponent } from './live-device-data.component';
+import { ManageCommandComponent } from './manage-command.component';
 
-describe('LiveDeviceDataComponent', () => {
-  let component: LiveDeviceDataComponent;
-  let fixture: ComponentFixture<LiveDeviceDataComponent>;
+describe('ManageCommandComponent', () => {
+  let component: ManageCommandComponent;
+  let fixture: ComponentFixture<ManageCommandComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LiveDeviceDataComponent]
+      imports: [ManageCommandComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LiveDeviceDataComponent);
+    fixture = TestBed.createComponent(ManageCommandComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -5,6 +5,10 @@ const routes: Routes = [
   {
     path : 'devices',
     loadChildren : () => import('./device/device.module').then(m => m.DeviceModule)
+  },
+  {
+    path : 'command',
+    loadChildren : () => import('./command/command.module').then(m => m.CommandModule)
   }
 ];
 

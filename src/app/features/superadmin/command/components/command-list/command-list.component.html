@@ -1,0 +1,115 @@
+<div class="card">
+    <div class="card-header">
+        <div class="header-part">
+            <span>Command List</span>
+            <div class="counting">
+                <button class="btn btn-primary !text-white !px-2 !py-1 !rounded !text-[11px]" (click)="onAddCommand('')">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                   Add Command
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="flex justify-between items-center mb-4">
+            <div class="flex items-center gap-2">
+                <label for="itemsPerPage" class="text-sm text-gray-700 whitespace-nowrap">Items per page:</label>
+                <select id="itemsPerPage"
+                    class="block w-20 p-2 bg-white border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+                    [(ngModel)]="pagesize.limit" [ngModelOptions]="{standalone: true}"
+                    (change)="onPageSizeChange($event)">
+                    @for (size of [25, 50, 100]; track $index) {
+                    <option [value]="size">{{ size }}</option>
+                    }
+                </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-600">Search:</span>
+                <div class="search-form">
+                    <input placeholder="Search for..." type="text" [(ngModel)]="searchKeyword"
+                        [ngModelOptions]="{standalone: true}" class="form-control search-input" />
+                    @if(searchKeyword) {
+                    <button type="button" class="btn-search" (click)="clearSearch()">
+                        <i class="fa fa-close" aria-hidden="true"></i>
+                    </button>
+                    } @else {
+                    <button type="button" class="btn-search">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="overflow-auto">
+                    <div id="datatable_wrapper">
+                        @if (isLoading) {
+                        <app-loader />
+                        } @else {
+                        <table id="datatable" class="table table-striped nowrap dataTable no-footer dtr-inline"
+                            role="grid" #TABLE aria-describedby="datatable_info" style="width: 100%" width="100%">
+                            <thead>
+                                <tr role="row">
+                                    @for (vehicleHeading of visibleColumns; track $index) {
+                                        <th>
+                                            <span>{{ vehicleHeading?.title }}</span>  
+                                          </th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ((commandList | searchFilter: searchKeyword)?.length > 0) {
+                                    @for (item of commandList |  searchFilter: searchKeyword | paginate: {id: 'comId',
+                                    itemsPerPage: pagesize.limit, currentPage: pagesize.offset, totalItems:
+                                    pagesize.count}; track $index) {
+                                    <tr>
+                                        <td>{{item?.id }}</td>
+                                        <td>{{item?.name }}</td>
+                                        <td>{{item?.command}}</td>
+                                        @if(this.deviceId) {
+                                            <td>
+                                                <button class="btn btn-primary" (click)="onGetDetails(item)">
+                                                    Show Details
+                                                </button>
+                                            </td>
+                                        }
+                                        <td class="!flex !space-x-2" >
+                                            <button class="btn btn-success" (click)="onAddCommand(item)">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-danger" (click)="onDeleteCommand(item)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        }
+                    </div>
+                </div>
+                @if((commandList | searchFilter: searchKeyword)?.length === 0){
+                    <div class="text-center py-4 text-gray-500">
+                        No Command Available
+                    </div>
+                } @else {
+                    <div class="!flex !justify-between !mt-4 !gap-2">
+                        <div class="counting">
+                            <span>
+                                {{ (commandList | searchFilter: searchKeyword)?.length > 0 ? startValue : 0 }} -
+                                {{ (commandList | searchFilter: searchKeyword)?.length > 0 ? ((commandList | searchFilter:
+                                searchKeyword)?.length < lastValue ? (commandList | searchFilter: searchKeyword)?.length : lastValue)
+                                    : 0 }} OF {{ (commandList | searchFilter: searchKeyword)?.length }} Commands </span>
+                        </div>
+                            <pagination-controls id="comId" [maxSize]="10" [responsive]="true" [nextLabel]="''" [previousLabel]="''"
+                                (pageChange)="onTablePageChange($event)">
+                            </pagination-controls>
+                        
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

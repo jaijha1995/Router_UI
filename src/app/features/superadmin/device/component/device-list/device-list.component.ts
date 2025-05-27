@@ -6,8 +6,8 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { CreateDeviceComponent } from '../create-device/create-device.component';
 import { SearchFilterPipe } from '../../../../shared/pipe/search.pipe';
 import { ViewDataComponent } from '../view-data/view-data.component';
-import { LiveDeviceDataComponent } from '../live-device-data/live-device-data.component';
 import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-device-list',
@@ -41,7 +41,8 @@ export class DeviceListComponent {
 
   constructor(
     private deviceService: DeviceService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private router : Router
   ) {
 
   }
@@ -111,17 +112,6 @@ export class DeviceListComponent {
   }
 
   onGoToLive(value :any) {
-    const initialState: ModalOptions = {
-      initialState: {
-        details: value ? value : '',
-      },
-    };
-    this.bsModalRef = this.modalService.show(
-      LiveDeviceDataComponent,
-      Object.assign(initialState, {
-        id: "confirmation",
-        class: 'modal-lg modal-dialog-centered alert-popup',
-      })
-    );
+    this.router.navigate(['/superadmin/command/list'], { queryParams: { deviceId: value?.id } });
   }
 }

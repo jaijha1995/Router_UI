@@ -1,0 +1,40 @@
+<div class="flex modal-header text-center">
+    <h5>{{label}} Command</h5>
+    <div class="close-modal" (click)="close()">
+        <i class="fa fa-close" style="cursor: pointer;"></i>
+    </div>
+</div>
+<div class="modal-body">
+    <form [formGroup]="commandForm" (ngSubmit)="submit($event, commandForm.value)">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label for="name" class="form-label">Name </label>
+                <input type="text" class="form-control" id="name" formControlName="commandName" placeholder="Enter name">
+                @if (commandForm.get('commandName')?.invalid && (commandForm.get('commandName')?.dirty || commandForm.get('commandName')?.touched)) {
+                  <div class="invalid-feedback d-block">
+                    @if (commandForm.get('commandName')?.errors?.['required']) {
+                      <span>Name is required</span>
+                    }
+                  </div>
+                }
+            </div>
+            <div class="col-md-9">
+                <label for="name" class="form-label">Command </label>
+                <textarea class="form-control" id="address" formControlName="command" rows="2" placeholder="Enter command"></textarea>
+                @if (commandForm.get('commandName')?.invalid && (commandForm.get('command')?.dirty || commandForm.get('command')?.touched)) {
+                  <div class="invalid-feedback d-block">
+                    @if (commandForm.get('command')?.errors?.['required']) {
+                      <span>Command is required</span>
+                    }
+                  </div>
+                }
+            </div>
+        </div>
+        <div class="modal-footer mt-3">
+            <button type="submit" class="btn btn-success">
+            Submit
+            </button>
+          <button type="button" class="btn btn-danger" (click)="close()">Cancel</button>
+        </div>
+    </form>
+</div>

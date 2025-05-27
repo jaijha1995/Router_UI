@@ -3,7 +3,7 @@
         <div class="header-part">
             <span>Router List</span>
             <div class="counting">
-                <button class="!bg-green-500 !text-white !px-2 !py-1 !rounded !text-[11px]" (click)="onAddDevice('')">
+                <button class="btn btn-primary !text-white !px-2 !py-1 !rounded !text-[11px]" (click)="onAddDevice('')">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                     ADD NEW ROUTER
                 </button>
@@ -67,6 +67,7 @@
                                         </div>
                                         <div class="space-y-1 pb-3 border-b border-gray-200">
                                             <p>ID : {{data?.id}}</p>
+                                            <p>Name : {{data?.name}}</p>
                                             <p>Username Login : {{data?.username}}</p>
                                             <p>Password Login : {{data?.password}}</p>
                                         </div>
@@ -149,9 +150,11 @@
                             searchKeyword)?.length < lastValue ? (deviceList | searchFilter: searchKeyword)?.length : lastValue)
                                 : 0 }} OF {{ (deviceList | searchFilter: searchKeyword)?.length }} Devices </span>
                     </div>
-                    <pagination-controls id="devID" [maxSize]="10" [responsive]="true" [nextLabel]="''" [previousLabel]="''"
-                        (pageChange)="onTablePageChange($event)">
-                    </pagination-controls>
+                    @if(deviceList?.length){
+                        <pagination-controls id="devID" [maxSize]="10" [responsive]="true" [nextLabel]="''" [previousLabel]="''"
+                            (pageChange)="onTablePageChange($event)">
+                        </pagination-controls>
+                    }
                 </div>
             }
     </div>
