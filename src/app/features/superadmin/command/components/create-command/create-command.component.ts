@@ -29,7 +29,7 @@ export class CreateCommandComponent {
 
   setInitialForm() {
     this.commandForm = this.fb.group({
-      commandName: ['',[Validators.required]],
+      commandName: [''],
       command: ['',[Validators.required]]
     });
 

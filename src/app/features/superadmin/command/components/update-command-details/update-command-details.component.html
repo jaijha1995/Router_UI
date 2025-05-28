@@ -1,0 +1,34 @@
+<div class="flex modal-header text-center">
+    <h5>Update Command Details</h5>
+    <div class="close-modal" (click)="close()">
+        <i class="fa fa-close" style="cursor: pointer;"></i>
+    </div>
+</div>
+<div class="modal-body">
+    <form [formGroup]="commandForm" (ngSubmit)="submit($event, commandForm.value)">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="name" class="form-label">Type </label>
+                <select class="form-control" formControlName="commandType">
+                    <option value=null>Select Type</option>
+                    @for(value of deviceType; track value) {
+                        <option [ngValue]="value.value">{{ value.name }}</option>
+                    }
+                </select>
+                @if (commandForm.get('commandType')?.invalid && (commandForm.get('commandType')?.dirty || commandForm.get('commandType')?.touched)) {
+                  <div class="invalid-feedback d-block">
+                    @if (commandForm.get('commandType')?.errors?.['required']) {
+                      <span>Type is required</span>
+                    }
+                  </div>
+                }
+            </div>
+        </div>
+        <div class="modal-footer mt-3">
+            <button type="submit" class="btn btn-success">
+            Submit
+            </button>
+          <button type="button" class="btn btn-danger" (click)="close()">Cancel</button>
+        </div>
+    </form>
+</div>

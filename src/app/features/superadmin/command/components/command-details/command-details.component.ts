@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
 import { FormsModule } from '@angular/forms';
 import { SearchFilterPipe } from '../../../../shared/pipe/search.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ActivatedRoute } from '@angular/router';
 import { CommandService } from '../../services/command.service';
+import { UpdateCommandDetailsComponent } from '../update-command-details/update-command-details.component';
 
 @Component({
   selector: 'app-command-details',
@@ -26,6 +27,7 @@ export class CommandDetailsComponent {
   bsModalRef!: BsModalRef
   commandId: any;
   deviceId: any;
+  commandDetailsId:any;
   get startValue(): number {
     return this.pagesize.offset * this.pagesize.limit - (this.pagesize.limit - 1);
   };
@@ -37,7 +39,8 @@ export class CommandDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private commandService: CommandService
+    private commandService: CommandService,
+    private modalService: BsModalService
   ) {
     this.route.queryParams.subscribe(params => {
       this.deviceId = params['deviceId'];
@@ -63,8 +66,8 @@ export class CommandDetailsComponent {
   
     this.commandService.commandDetails(payload).subscribe((res: any) => {
       this.isLoading = false;
-      const commandData = res?.body?.data?.response || [];
-  
+      const commandData = res?.body?.data?.response || [];  
+      this.commandDetailsId = res?.body?.data?.id;
       this.pagesize.count = commandData.length;
   
       if (commandData.length > 0) {
@@ -107,6 +110,22 @@ export class CommandDetailsComponent {
   }
 
   onUpdateCommand(value:any) {
-
+    const initialState: ModalOptions = {
+      initialState: {
+        editData: value ? value : '',
+        deviceId : this.commandDetailsId
+      },
+    };
+    this.bsModalRef = this.modalService.show(
+      UpdateCommandDetailsComponent,
+      Object.assign(initialState, {
+        class: 'modal-md modal-dialog-centered alert-popup',
+      })
+    );
+    this.bsModalRef?.content?.mapdata?.subscribe((val: any) => {
+      this.pagesize.offset = 1;
+      this.pagesize.limit = 25;
+      this.getCommandDetails()
+    });
   }
 }

@@ -8,6 +8,13 @@
     <form [formGroup]="deviceForm" (ngSubmit)="onSubmit($event, deviceForm.value)">
         <div class="row">
             <div class="col-md-6 mb-2">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" placeholder="Enter Host" formControlName="name"/>
+                @if (deviceForm.get('name')?.touched && deviceForm.get('name')?.invalid) {
+                    <div class="text-danger small">Name is required</div>
+                }
+            </div>
+            <div class="col-md-6 mb-2">
                 <label class="form-label">Host</label>
                 <input type="text" class="form-control" placeholder="Enter Host" formControlName="host"/>
                 @if (deviceForm.get('host')?.touched && deviceForm.get('host')?.invalid) {

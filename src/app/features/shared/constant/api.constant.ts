@@ -5,5 +5,6 @@ export const API_CONSTANT = {
     command :'command/command/',
     updateDeleteCommand : 'command/command/{id}/',
     commandDetails : 'connection/send-command/',
-    cpuList : 'device/device/{id}',
+    cpuList : 'device/device/{id}/',
+    updateCommandDetails :'connection/send-command/{id}/'
 }

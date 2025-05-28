@@ -38,4 +38,9 @@ export class CommandService {
     return this.apiService.post(url, data).pipe(catchError((error: HttpErrorResponse) => of(error)));
   }
 
+  updateCommandDetails(payload: any, id:any): Observable<any> {
+    let url = API_CONSTANT.updateCommandDetails.replace('{id}', id);
+    return this.apiService.put(url, payload).pipe(catchError((error: HttpErrorResponse) => of(error)))
+  }
+
 }

@@ -27,6 +27,7 @@ export class CreateDeviceComponent {
 
   setInitialForm() {
     this.deviceForm = this.fb.group({
+      name: ['',[Validators.required]],
       host: ['',[Validators.required]],
       port: ['',[Validators.required]],
       username: ['', [Validators.required]],
@@ -43,6 +44,7 @@ export class CreateDeviceComponent {
 
     let payload = {
         "id": 0,
+         name : formvalue.name,
         "host": formvalue.host,
         "username": formvalue.username,
         "password": formvalue.password,

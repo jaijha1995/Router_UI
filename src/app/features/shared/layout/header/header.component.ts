@@ -53,4 +53,8 @@ export class HeaderComponent {
     this.notficationService.showSuccess("Logout successfully");
     this.router.navigate(['/login']);
   }
+
+  goto() {
+    this.router.navigate(['/superadmin/devices'])
+  }
 }
