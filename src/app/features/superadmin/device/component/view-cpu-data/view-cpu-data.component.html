@@ -1,0 +1,61 @@
+<div class="modal-header text-center">
+    <h5>System Details</h5>
+    <div class="close-modal" (click)="close()">
+        <i class="fa fa-close" style="cursor: pointer;"></i>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="system-info-container">
+        <!-- General Information -->
+        <div class="info-section">
+            <h6><i class="fa fa-info-circle"></i> General Information</h6>
+            <div class="info-row">
+                <span class="info-label">Version:</span>
+                <span class="info-value">{{ data?.version }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Uptime:</span>
+                <span class="info-value">{{ data?.uptime }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Last Updated:</span>
+                <span class="info-value">{{ data?.timestamp | date:'medium' }}</span>
+            </div>
+        </div>
+
+        <!-- CPU Information -->
+        <div class="info-section">
+            <h6><i class="fa fa-microchip"></i> CPU Information</h6>
+            <div class="info-row">
+                <span class="info-label">CPU Load:</span>
+                <span class="info-value">{{ data?.cpu_load }}</span>                
+            </div>
+        </div>
+
+        <!-- Memory Information -->
+        <div class="info-section">
+            <h6><i class="fa fa-memory"></i> Memory</h6>
+            <div class="info-row">
+                <span class="info-label">Usage:</span>
+                <span class="info-value">{{ (data?.total_memory - data?.free_memory) / 1024 | number:'1.0-0' }} MB / {{ data?.total_memory / 1024 | number:'1.0-0' }} MB</span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" [style.width.%]="(data?.total_memory - data?.free_memory) / data?.total_memory * 100"></div>
+                <span class="progress-value">{{ ((data?.total_memory - data?.free_memory) / data?.total_memory * 100) | number:'1.0-0' }}%</span>
+            </div>
+        </div>
+
+        <!-- Storage Information -->
+        <div class="info-section">
+            <h6><i class="fa fa-hdd-o"></i> Storage</h6>
+            <div class="info-row">
+                <span class="info-label">Usage:</span>
+                <span class="info-value">{{ (data?.total_hdd_space - data?.free_hdd_space) / 1024 | number:'1.0-0' }} MB / {{ data?.total_hdd_space / 1024 | number:'1.0-0' }} MB</span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" [style.width.%]="(data?.total_hdd_space - data?.free_hdd_space) / data?.total_hdd_space * 100"></div>
+                <span class="progress-value">{{ ((data?.total_hdd_space - data?.free_hdd_space) / data?.total_hdd_space * 100) | number:'1.0-0' }}%</span>
+            </div>
+        </div>
+    </div>
+</div>

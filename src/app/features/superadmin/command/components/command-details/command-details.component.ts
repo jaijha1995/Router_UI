@@ -47,41 +47,40 @@ export class CommandDetailsComponent {
   }
 
   ngOnInit() {
-    this.setInitialTable();
   }
 
   setInitialTable() {
-    this.columns = [
-      { key: 'id', title: 'ID' },
-      { key: 'name', title: 'Name' },
-      { key: 'default-name', title: 'Default Name' },
-      { key: 'type', title: 'Type' },
-      { key: 'mtu', title: 'MTU' },
-      { key: 'actual-mtu', title: 'Actual MTU' },
-      { key: 'mac-address', title: 'MAC Address' },
-      { key: 'last-link-up-time', title: 'Last Link Up Time' },
-      { key: 'rx-byte', title: 'RX Bytes' },
-      { key: 'tx-byte', title: 'TX Bytes' },
-      { key: 'rx-packet', title: 'RX Packets' },
-      { key: 'tx-packet', title: 'TX Packets' },
-      { key: 'running', title: 'Status' },
-      { key: 'disabled', title: 'Disabled' },
-      {key : '', title : 'Action'},
-    ]
+    this.columns = [];
   }
 
   getCommandDetails() {
     this.isLoading = true;
-    let payload = {
-      "device_id": this.deviceId && Number(this.deviceId),
-      "command_id": this.commandId && Number(this.commandId)
-    }
+  
+    const payload = {
+      device_id: this.deviceId && Number(this.deviceId),
+      command_id: this.commandId && Number(this.commandId)
+    };
+  
     this.commandService.commandDetails(payload).subscribe((res: any) => {
       this.isLoading = false;
-      this.commandList = res?.body?.data?.response || [];
-      this.pagesize.count = this.commandList?.length;
-    })
+      const commandData = res?.body?.data?.response || [];
+  
+      this.pagesize.count = commandData.length;
+  
+      if (commandData.length > 0) {
+        this.columns = Object.keys(commandData[0]).map(key => ({
+          key,
+          title: key.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+        }));
+        this.columns.push({ key: 'update', title: 'Action' });
+  
+        this.commandList = commandData;
+      } else {
+        this.commandList = [];
+      }
+    });
   }
+  
 
   onPageSizeChange(event: Event): void {
     const selectedSize = parseInt((event.target as HTMLSelectElement).value, 10);

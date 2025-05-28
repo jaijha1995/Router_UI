@@ -41,49 +41,40 @@
                         @if (isLoading) {
                         <app-loader />
                         } @else {
-                        <table id="datatable" class="table table-striped nowrap dataTable no-footer dtr-inline"
+                            <table id="datatable" class="table table-striped nowrap dataTable no-footer dtr-inline"
                             role="grid" #TABLE aria-describedby="datatable_info" style="width: 100%" width="100%">
                             <thead>
-                                <tr role="row">
-                                    @for (vehicleHeading of columns; track $index) {
-                                    <th>
-                                        <span>{{ vehicleHeading?.title }}</span>
-                                    </th>
-                                    }
-                                </tr>
+                              <tr role="row">
+                                @for (column of columns; track column.key) {
+                                  <th><span>{{ column.title }}</span></th>
+                                }
+                              </tr>
                             </thead>
                             <tbody>
-                                @if ((commandList | searchFilter: searchKeyword)?.length > 0) {
-                                    @if ((commandList | searchFilter: searchKeyword)?.length > 0) {
-                                        @for (item of commandList | searchFilter: searchKeyword | paginate: {id: 'comdeId',
-                                        itemsPerPage: pagesize.limit, currentPage: pagesize.offset, totalItems:
-                                        pagesize.count}; track $index) {
-                                        <tr>
-                                            <td>{{item?.id}}</td>
-                                            <td>{{item?.name}}</td>
-                                            <td>{{item?.['default-name']}}</td>
-                                            <td>{{item?.type}}</td>
-                                            <td>{{item?.mtu}}</td>
-                                            <td>{{item?.['actual-mtu']}}</td>
-                                            <td>{{item?.['mac-address']}}</td>
-                                            <td>{{item?.['last-link-up-time']}}</td>
-                                            <td>{{item?.['rx-byte']}}</td>
-                                            <td>{{item?.['tx-byte']}}</td>
-                                            <td>{{item?.['rx-packet']}}</td>
-                                            <td>{{item?.['tx-packet']}}</td>
-                                            <td>{{item?.running}}</td>
-                                            <td>{{item?.disabled}}</td>
-                                            <td>
-                                                <button class="btn btn-success" (click)="onUpdateCommand(item)">
-                                                    <i class="fa fa-pencil"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        }
+                              @if ((commandList | searchFilter: searchKeyword)?.length > 0) {
+                                @for (item of (commandList | searchFilter: searchKeyword | paginate: { id: 'comdeId', itemsPerPage: pagesize.limit, currentPage: pagesize.offset, totalItems: pagesize.count }); track $index) {
+                                  <tr>
+                                    @for (column of columns; track column.key) {
+                                      @if (column.key !== 'update') {
+                                        <td>{{ item[column.key] }}</td>
+                                      } @else {
+                                        <td>
+                                          <button class="btn btn-success" (click)="onUpdateCommand(item)">
+                                            <i class="fa fa-pencil"></i>
+                                          </button>
+                                        </td>
+                                      }
                                     }
+                                  </tr>
                                 }
+                              } @else {
+                                <tr>
+                                  <td >No data found</td>
+                                </tr>
+                              }
                             </tbody>
-                        </table>
+                          </table>
+                          
                         }
                     </div>
                 </div>

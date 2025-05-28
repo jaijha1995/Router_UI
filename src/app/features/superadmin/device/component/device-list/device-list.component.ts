@@ -8,6 +8,7 @@ import { SearchFilterPipe } from '../../../../shared/pipe/search.pipe';
 import { ViewDataComponent } from '../view-data/view-data.component';
 import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
 import { Router } from '@angular/router';
+import { ViewCpuDataComponent } from '../view-cpu-data/view-cpu-data.component';
 
 @Component({
   selector: 'app-device-list',
@@ -113,5 +114,20 @@ export class DeviceListComponent {
 
   onGoToLive(value :any) {
     this.router.navigate(['/superadmin/command/list'], { queryParams: { deviceId: value?.id } });
+  }
+
+  onGoToCPU(value :any) {
+    const initialState: ModalOptions = {
+      initialState: {
+        detailsData: value ? value : ''
+      },
+    };
+    this.bsModalRef = this.modalService.show(
+      ViewCpuDataComponent,
+      Object.assign(initialState, {
+        id: "confirmation",
+        class: 'modal-md modal-dialog-centered alert-popup',
+      })
+    );
   }
 }

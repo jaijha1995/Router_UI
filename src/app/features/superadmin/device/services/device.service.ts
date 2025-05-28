@@ -27,5 +27,12 @@ export class DeviceService {
       .pipe(catchError((error: HttpErrorResponse) => of(error)));
   }
 
+  cpuListData(id:any): Observable<any> {
+    let url = API_CONSTANT.cpuList.replace('{id}', id)
+    return this.apiService
+     .get(url)
+     .pipe(catchError((error: HttpErrorResponse) => of(error)));
+  }
+
 
 }
