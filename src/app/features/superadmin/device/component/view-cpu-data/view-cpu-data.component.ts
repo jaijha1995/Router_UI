@@ -5,67 +5,60 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchFilterPipe } from '../../../../shared/pipe/search.pipe';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { DeviceService } from '../../services/device.service';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from '../../../../shared/services/web-socket.service';
 
 @Component({
   selector: 'app-view-cpu-data',
-  imports: [ NgxPaginationModule , DatePipe , DecimalPipe],
+  imports: [NgxPaginationModule, DatePipe, DecimalPipe],
   templateUrl: './view-cpu-data.component.html',
   styleUrl: './view-cpu-data.component.scss'
 })
 export class ViewCpuDataComponent {
   isLoading: boolean = false;
-  pagesize = {
-    limit: 25,
-    offset: 1,
-    count: 0,
-  };
-  columns: any;
-  data :any
-  searchKeyword: any;
-  bsModalRef! : BsModalRef
+  data: any;
   deviceId: any;
-  detailsData :any
-  get startValue(): number {
-    return this.pagesize.offset * this.pagesize.limit - (this.pagesize.limit - 1);
-  };
+  detailsData: any;
 
-  get lastValue(): number {
-    const calculatedLastValue = this.startValue + this.pagesize.limit - 1;
-    return Math.min(calculatedLastValue, this.pagesize.count);
-  };
+  private subscription!: Subscription;
+  public receivedData: any;
+
   constructor(
-    private bsModalService : BsModalService,
-    private DeviceService : DeviceService
-  ) { };
+    private bsModalService: BsModalService,
+    private DeviceService: DeviceService,
+    private webSocketService: WebSocketService
+  ) { }
 
   ngOnInit() {
-    this.setInitialTable();
-    this.getCpuList()
+    console.log(this.detailsData);
+    
+    if (this.detailsData?.id) {
+      this.webSocketService.connect(this.detailsData.id);
+      
+      this.subscription = this.webSocketService.getMessages().subscribe(
+        (data) => {
+          this.data = data;
+          console.log('Received data:', data);
+        },
+        (error) => {
+          console.error('WebSocket error:', error);
+        }
+      );
+    } else {
+      console.warn('Cannot connect - detailsData.id is not available');
+    }
   }
 
-  getCpuList() {
-    this.isLoading = true;
-    this.DeviceService.cpuListData(this.detailsData?.id).subscribe((res: any) => {
-      this.isLoading = false;      
-      this.data = res?.body?.data;
-    })
+  updateRouterId(newId: number): void {
+    this.webSocketService.updateRouterId(newId);
   }
 
-  setInitialTable() {
-    this.columns = [
-      {key: '', title : 'Id'},
-      {key: '', title : 'Version'},
-      {key: '', title : 'CPU Load'},
-      {key : '', title : 'Free Memory'},
-      {key : '', title : 'Total Memory'},
-      {key : '', title : 'Free Disk Space'},
-      {key : '', title : 'Total Disk Space'},
-      {key : '', title : 'Uptime'},
-      {key : '', title : 'Timestamp'},
-    ]
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+    this.webSocketService.disconnect();
   }
 
-  close(){
-    this.bsModalService.hide()
+  close() {
+    this.bsModalService.hide();
   }
 }
