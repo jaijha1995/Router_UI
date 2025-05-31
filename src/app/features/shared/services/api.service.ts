@@ -23,7 +23,7 @@ export class ApiService {
   miniCartSubject = new ReplaySubject(1);
 
   setBaseSiteIdLocal(url: string) {
-    const formatedURl = 'http://3.110.185.148:8002/api/' + url
+    const formatedURl = 'http://143.110.242.217:8028/api/' + url
     return formatedURl;
   }
 
