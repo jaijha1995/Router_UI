@@ -14,7 +14,7 @@ export class WebSocketService {
 
   public connect(routerId: number): void {
     this.currentRouterId = routerId;
-    this.socket = new WebSocket('ws://3.110.185.148:8001/ws/mikrotik/');
+    this.socket = new WebSocket('ws://143.110.242.217:8028/ws/mikrotik/');
 
     this.socket.onopen = (event) => {
       console.log('WebSocket connected');
